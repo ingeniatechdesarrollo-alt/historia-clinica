@@ -350,6 +350,36 @@ function abrevDoc(t) {
   return m[t] || "Documento";
 }
 
+/* ---------------- aplicación instalable (PWA) ---------------- */
+let _instalar = null;
+const esInstalada = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const esIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+function actualizarBotonInstalar() {
+  const ver = !esInstalada() && (!!_instalar || esIOS());
+  $$(".btn-instalar, .btn-instalar-login, .btn-instalar-movil").forEach((b) => b.classList.toggle("oculto", !ver));
+}
+window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); _instalar = e; actualizarBotonInstalar(); });
+window.addEventListener("appinstalled", () => { _instalar = null; actualizarBotonInstalar(); toast("Aplicación instalada", "ok"); });
+async function instalarApp() {
+  if (_instalar) {
+    _instalar.prompt();
+    await _instalar.userChoice;
+    _instalar = null;
+    actualizarBotonInstalar();
+    return;
+  }
+  modal({
+    titulo: "Instalar aplicación",
+    cuerpo: esIOS()
+      ? `<ol style="margin:0;padding-left:20px;line-height:1.9"><li>Abra esta página en <b>Safari</b>.</li><li>Toque el botón <b>Compartir</b> (cuadro con flecha hacia arriba).</li><li>Elija <b>"Agregar a pantalla de inicio"</b> y luego <b>Agregar</b>.</li></ol>`
+      : `<ol style="margin:0;padding-left:20px;line-height:1.9"><li>Abra esta página en <b>Chrome</b> o <b>Edge</b>.</li><li>En el celular: menú <b>⋮</b> → <b>"Instalar aplicación"</b> o <b>"Agregar a pantalla principal"</b>.</li><li>En el PC: ícono de instalar en la barra de direcciones (pantalla con flecha) o menú <b>⋮</b> → <b>"Instalar Historia Clínica"</b>.</li></ol>`
+  });
+}
+if ("serviceWorker" in navigator && window.isSecureContext) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch((e) => console.warn("SW", e)));
+}
+actualizarBotonInstalar();
+
 /* ---------------- constantes de dominio ---------------- */
 const CLASIF = [
   { v: "Nueva", c: "var(--c-nueva)" },
