@@ -1,0 +1,6 @@
+# Nunca subir bases de datos ni datos de pacientes
+*.mdb
+*.accdb
+*.csv
+*.xlsx
+adjuntos/
