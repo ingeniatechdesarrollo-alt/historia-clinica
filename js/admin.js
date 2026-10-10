@@ -13,7 +13,7 @@ VISTAS.usuarios = async () => {
       ${perfiles.map((u) => `<tr>
         <td><b>${h(u.nombre)}</b>${u.id === S.perfil.id ? ' <span class="chip pri">Usted</span>' : ""}</td>
         <td>${h(u.email || "")}</td>
-        <td>${u.rol === "medico" ? "Médico" : "Recepción"}</td>
+        <td>${h(ROLES[u.rol] || u.rol)}</td>
         <td>${h([u.firma_linea1, u.firma_linea2].filter(Boolean).join(" · ") || "—")}</td>
         <td>${h(S.agendas.find((a) => a.id === u.agenda_id)?.nombre || "—")}</td>
         <td>${u.activo ? '<span class="chip ok">Activo</span>' : '<span class="chip aviso">Inactivo</span>'}</td>
@@ -33,7 +33,7 @@ function formUsuario(u) {
       <div class="campo span2"><label>Nombre completo</label><input name="nombre" value="${h(u.nombre || "")}" required></div>
       ${nuevo ? `<div class="campo"><label>Correo (usuario)</label><input type="email" name="email" required></div>
         <div class="campo"><label>Contraseña inicial</label><input name="clave" type="text" minlength="6" required value="${Math.random().toString(36).slice(2, 10)}"></div>` : ""}
-      <div class="campo"><label>Rol</label><select name="rol"><option value="medico" ${u.rol === "medico" ? "selected" : ""}>Médico</option><option value="recepcion" ${u.rol === "recepcion" ? "selected" : ""}>Recepción</option></select></div>
+      <div class="campo"><label>Rol</label><select name="rol">${Object.entries(ROLES).map(([k, t]) => `<option value="${k}" ${u.rol === k ? "selected" : ""}>${t}</option>`).join("")}</select></div>
       <div class="campo"><label>Agenda principal</label><select name="agenda_id"><option value="">—</option>${S.agendas.map((a) => `<option value="${a.id}" ${a.id === u.agenda_id ? "selected" : ""}>${h(a.nombre)}</option>`).join("")}</select></div>
       <div class="campo"><label>Firma · línea 1</label><input name="firma_linea1" value="${h(u.firma_linea1 || "")}" placeholder="Ej: Dr. Nombre Apellido"></div>
       <div class="campo"><label>Firma · línea 2</label><input name="firma_linea2" value="${h(u.firma_linea2 || "")}" placeholder="Ej: Reg. médico 1234-56"></div>
