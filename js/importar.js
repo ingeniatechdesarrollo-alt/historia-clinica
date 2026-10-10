@@ -209,11 +209,11 @@ async function importarTodo() {
     const hc = {}; T.DocumentoHistoriaClinica.forEach((x) => (hc[kd(x.NoHistoria, x.NoDocumento)] = x));
     const ev = {}; T.DocumentoEvolucion.forEach((x) => (ev[kd(x.NoHistoria, x.NoDocumento)] = x));
     const consultas = []; let sinPac = 0;
-    const fechaDoc = {};
+    const fechaDoc = {}, autorDoc = {};
     for (const d of T.Documentos) {
       const k = kd(d.NoHistoria, d.NoDocumento);
       const pid = mapaPac["H:" + String(d.NoHistoria).trim()];
-      fechaDoc[k] = iFH(d.Fecha, d.Hora);
+      fechaDoc[k] = iFH(d.Fecha, d.Hora); autorDoc[k] = tx(d.RegistroUsuario);
       if (!pid) { sinPac++; continue; }
       const t = tipoDoc[k] || (hc[k] ? "DocumentoHistoriaClinica" : "DocumentoEvolucion");
       const base = { legacy_id: "D:" + k, paciente_id: pid, no_documento: Number(d.NoDocumento) || null, fecha: fechaDoc[k] || "2000-01-01 00:00:00", clasificacion: tx(d.Clasificacion), profesional: tx(d.RegistroUsuario), firmada: true,
@@ -252,7 +252,7 @@ async function importarTodo() {
       const base = "P:" + k + ":" + norm(o.Nombre);
       cuentaOrd[base] = (cuentaOrd[base] || 0) + 1;
       return { legacy_id: base + ":" + cuentaOrd[base], paciente_id: pid, consulta_id: mapaCons["D:" + k] || null, fecha: fechaDoc[k] || "2000-01-01 00:00:00",
-        categoria: categoriaPlantilla(o.Nombre), nombre: (tx(o.Nombre) || "Orden").replace(/^[ERM] /, ""), contenido: tx(o.Prescripcion) || "", profesional: null };
+        categoria: categoriaPlantilla(o.Nombre), nombre: (tx(o.Nombre) || "Orden").replace(/^[ERM] /, ""), contenido: tx(o.Prescripcion) || "", profesional: autorDoc[k] || null };
     }).filter(Boolean);
     await lotes("ordenes", ordenes, "legacy_id", 500, "Órdenes");
 
