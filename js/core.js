@@ -355,7 +355,7 @@ let _instalar = null;
 const esInstalada = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 const esIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 function actualizarBotonInstalar() {
-  const ver = !esInstalada() && (!!_instalar || esIOS());
+  const ver = !esInstalada();
   $$(".btn-instalar, .btn-instalar-login, .btn-instalar-movil").forEach((b) => b.classList.toggle("oculto", !ver));
 }
 window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); _instalar = e; actualizarBotonInstalar(); });
