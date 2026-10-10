@@ -332,9 +332,13 @@ function bloquePacienteImpresion(p) {
     <div><b>Entidad:</b> ${h(p.entidad || "—")}</div>
   </div>`;
 }
-function firmaImpresion(nombre, registro) {
-  const f1 = nombre || S.perfil?.firma_linea1 || S.perfil?.nombre || "";
-  const f2 = registro ?? (S.perfil?.firma_linea2 || "");
+// Firma al pie: si imprime el médico autor, sale su firma completa (nombre + registro);
+// si imprime otro usuario, sólo el nombre del médico que escribió el documento.
+function firmaImpresion(profesional) {
+  const p = S.perfil || {};
+  const propio = p.rol === "medico" && (!profesional || [p.firma_linea1, p.nombre].filter(Boolean).map(norm).includes(norm(profesional)));
+  const f1 = propio ? (p.firma_linea1 || p.nombre) : (profesional || (S.config.encabezado || {}).linea1 || "");
+  const f2 = propio ? (p.firma_linea2 || "") : "";
   return `<div class="imp-firma"><b>${h(f1)}</b>${f2 ? "<br>" + h(f2) : ""}</div>`;
 }
 function imprimir(html) {
