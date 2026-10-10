@@ -358,7 +358,7 @@ function imprimirConsultas(p, docs) {
         ${(c.notas || []).map((n) => `<h5>Nota aclaratoria · ${h(n.autor || "")} · ${h(fFechaHora(n.created_at.replace("T", " ").slice(0, 19)))}</h5><div class="txt">${h(n.texto)}</div>`).join("")}
       </div>`;
     }).join("")}
-    ${firmaImpresion(S.perfil.rol === "medico" ? null : prof, S.perfil.rol === "medico" ? null : "")}
+    ${firmaImpresion(prof)}
     <div class="imp-pie">Documento confidencial — Historia clínica (Res. 1995 de 1999). ${docs.length} documento(s).</div>`);
 }
 
@@ -567,7 +567,7 @@ function imprimirOrden(p, o) {
     <div style="margin-bottom:8px"><b>Fecha:</b> ${h(fFechaHora(o.fecha))}</div>
     ${bloquePacienteImpresion(p)}
     <div class="imp-orden">${h(o.contenido)}</div>
-    ${firmaImpresion(o.profesional, S.perfil.firma_linea1 && o.profesional === S.perfil.firma_linea1 ? S.perfil.firma_linea2 : undefined)}`);
+    ${firmaImpresion(o.profesional)}`);
 }
 
 /* ---- Pestaña: Citas ---- */
