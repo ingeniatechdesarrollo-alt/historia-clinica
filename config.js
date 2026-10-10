@@ -1,13 +1,13 @@
 // =============================================================
 //  Configuración de conexión a Supabase
 //  Supabase → Project Settings → API
-//  (La "anon public key" es pública por diseño: los datos están
+//  (La llave publicable / anon es pública por diseño: los datos están
 //   protegidos por las reglas de seguridad RLS de schema.sql.
-//   NUNCA ponga aquí la service_role key.)
+//   NUNCA ponga aquí la service_role / secret key.)
 // =============================================================
 window.AHP_CONFIG = {
-  SUPABASE_URL: "PEGUE_AQUI_LA_PROJECT_URL",
-  SUPABASE_ANON_KEY: "PEGUE_AQUI_LA_ANON_PUBLIC_KEY",
+  SUPABASE_URL: "https://rrqqwkrvcnwxluuwquck.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_mWQw6I9g7JZb5dwodRaTNQ_e5VbbiGe",
   // Cierra la sesión tras este tiempo sin actividad (minutos)
   INACTIVIDAD_MIN: 60
 };
