@@ -23,13 +23,17 @@ create table if not exists public.perfiles (
   id            uuid primary key references auth.users(id) on delete cascade,
   email         text,
   nombre        text not null default '',
-  rol           text not null default 'recepcion' check (rol in ('medico','recepcion')),
+  rol           text not null default 'recepcion',
   activo        boolean not null default false,
   firma_linea1  text,            -- p.ej. nombre del médico
   firma_linea2  text,            -- p.ej. "Reg. 1239-83"
   agenda_id     int,
   created_at    timestamptz not null default now()
 );
+
+-- Roles: medico, recepcion, ingeniero (soporte técnico). Todos son administradores.
+alter table public.perfiles drop constraint if exists perfiles_rol_check;
+alter table public.perfiles add constraint perfiles_rol_check check (rol in ('medico','recepcion','ingeniero'));
 
 -- ¿El usuario que llama es un usuario activo? (todos los activos son administradores)
 create or replace function public.es_activo() returns boolean
@@ -48,7 +52,7 @@ begin
   insert into public.perfiles (id, email, nombre, rol, activo)
   values (new.id, new.email,
           coalesce(new.raw_user_meta_data->>'nombre', split_part(new.email,'@',1)),
-          case when (new.raw_user_meta_data->>'rol') in ('medico','recepcion')
+          case when (new.raw_user_meta_data->>'rol') in ('medico','recepcion','ingeniero')
                then new.raw_user_meta_data->>'rol' else 'recepcion' end,
           primero)
   on conflict (id) do nothing;
