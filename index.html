@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>AHP · Historia Clínica</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b3f3c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Historia Clínica">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e5e5a'/%3E%3Cpath d='M13 8h6v5h5v6h-5v5h-6v-5H8v-6h5z' fill='white'/%3E%3C/svg%3E">
 <style>
 :root{
@@ -40,6 +47,8 @@ h1,h2,h3,h4{margin:0;line-height:1.25}
 #menu a:hover{background:rgba(255,255,255,.07);color:#fff}
 #menu a.activo{background:#e9f6f4;color:#0b3f3c}
 #menu .sep{height:1px;background:rgba(255,255,255,.1);margin:8px 6px}
+.btn-instalar{margin:0 12px 10px;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 10px;border-radius:8px;border:1px dashed rgba(255,255,255,.35);background:rgba(255,255,255,.06);color:#e9f6f4;font-weight:600;cursor:pointer}
+.btn-instalar:hover{background:rgba(255,255,255,.12)}
 .usuario-box{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px}
 .usuario-box b{color:#fff;display:block;font-size:13px}
 .usuario-box button{margin-top:8px;background:none;border:1px solid rgba(255,255,255,.25);color:#d6ebe8;border-radius:7px;padding:5px 10px;cursor:pointer;font-size:12px}
@@ -270,6 +279,7 @@ mark{background:#ffe58a;border-radius:2px;padding:0 1px}
       <div><h1 id="login-titulo">Historia Clínica</h1><p id="login-sub">Ingrese con su usuario</p></div>
     </div>
     <div class="tarjeta"><div class="t-cuerpo" id="login-cuerpo"></div></div>
+    <div style="text-align:center;margin-top:14px"><button class="btn btn-instalar-login oculto" onclick="instalarApp()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Instalar aplicación</button></div>
     <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">Información clínica confidencial · Ley 1581 de 2012 · Res. 1995 de 1999</p>
   </div>
 </div>
@@ -290,10 +300,11 @@ mark{background:#ffe58a;border-radius:2px;padding:0 1px}
       <a href="#/importar" data-r="importar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>Importar datos</a>
       <a href="#/auditoria" data-r="auditoria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Auditoría</a>
     </nav>
+    <button class="btn-instalar oculto" onclick="instalarApp()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Instalar aplicación</button>
     <div class="usuario-box"><b id="u-nombre"></b><span id="u-rol"></span><br><button id="btn-salir">Cerrar sesión</button></div>
   </aside>
   <div>
-    <div id="barra-movil"><button id="btn-menu" aria-label="Menú"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><b>Historia Clínica</b></div>
+    <div id="barra-movil"><button id="btn-menu" aria-label="Menú"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><b>Historia Clínica</b><button class="btn-instalar-movil oculto" onclick="instalarApp()" style="margin-left:auto;background:#e9f6f4;color:#0b3f3c;border-radius:7px;padding:5px 10px;font-weight:600;font-size:12.5px">Instalar</button></div>
     <main id="principal"></main>
   </div>
 </div>
