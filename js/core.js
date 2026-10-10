@@ -209,7 +209,7 @@ async function mostrarLogin() {
     <form id="f-login" class="rejilla">
       ${primer ? `<div class="alerta info">Aún no hay usuarios. El primero que se cree queda como administrador.</div>
       <div class="campo"><label>Nombre completo</label><input name="nombre" required autocomplete="name"></div>
-      <div class="campo"><label>Rol</label><select name="rol"><option value="medico">Médico</option><option value="recepcion">Recepción</option></select></div>` : ""}
+      <div class="campo"><label>Rol</label><select name="rol"><option value="medico">Médico</option><option value="recepcion">Recepción</option><option value="ingeniero">Ingeniero (soporte)</option></select></div>` : ""}
       <div class="campo"><label>Correo</label><input name="email" type="email" required autocomplete="username"></div>
       <div class="campo"><label>Contraseña</label><input name="clave" type="password" required minlength="6" autocomplete="${primer ? "new-password" : "current-password"}"></div>
       <button class="btn pri" style="height:42px">${primer ? "Crear administrador" : "Ingresar"}</button>
@@ -249,7 +249,7 @@ async function entrar(user) {
   $("#login").classList.add("oculto");
   $("#app").classList.remove("oculto");
   $("#u-nombre").textContent = perfil.nombre || perfil.email;
-  $("#u-rol").textContent = perfil.rol === "medico" ? "Médico · Administrador" : "Recepción · Administrador";
+  $("#u-rol").textContent = (ROLES[perfil.rol] || perfil.rol) + " · Administrador";
   await cargarBase();
   suscribirCitas();
   vigilarInactividad();
@@ -381,4 +381,5 @@ const CAMPOS_HC = [
   ["conducta", "Conducta"]
 ];
 const PLANTILLA_EXAMEN_FISICO = "\nPresión arterial:\nPulso:\nTemperatura:\nPeso:   Kg\n";
+const ROLES = { medico: "Médico", recepcion: "Recepción", ingeniero: "Ingeniero (soporte)" };
 const CATEGORIAS_ORDEN = ["Laboratorio", "Imágenes", "Medicamento", "Otro"];
